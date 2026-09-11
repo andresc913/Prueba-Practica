@@ -1,80 +1,193 @@
 import java.util.Scanner;
 
 public class EvaluacionProyecto {
-    static double leerEnRango(Scanner sc, String mensaje, double min, double max) {
-        double valor;
-        do {
-            System.out.print(mensaje);
-            while (!sc.hasNextDouble()) {
-                System.out.print("Ingrese un número válido: ");
-                sc.next();
-            }
-            valor = sc.nextDouble();
-            if (valor < min || valor > max)
-                System.out.printf("El valor debe estar entre %.0f y %.0f.%n", min, max);
-        } while (valor < min || valor > max);
-        return valor;
-    }
-
-    static int leerNoNegativo(Scanner sc, String mensaje) {
-        int valor;
-        do {
-            System.out.print(mensaje);
-            while (!sc.hasNextInt()) {
-                System.out.print("Ingrese un entero válido: ");
-                sc.next();
-            }
-            valor = sc.nextInt();
-        } while (valor < 0);
-        return valor;
-    }
-
-    static boolean leerSiNo(Scanner sc, String mensaje) {
-        String r;
-        do {
-            System.out.print(mensaje + " (S/N): ");
-            r = sc.next().trim().toUpperCase();
-        } while (!r.equals("S") && !r.equals("N"));
-        return r.equals("S");
-    }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        double analisis = leerEnRango(sc, "Nota de análisis: ", 0, 10);
-        double diseno = leerEnRango(sc, "Nota de diseño: ", 0, 10);
-        double codificacion = leerEnRango(sc, "Nota de codificación: ", 0, 10);
-        double avance = leerEnRango(sc, "Porcentaje de avance real: ", 0, 100);
-        int errores = leerNoNegativo(sc, "Número de errores: ");
-        boolean documentacion = leerSiNo(sc, "¿Documentación completa?");
-        boolean exposicion = leerSiNo(sc, "¿Realizó exposición final?");
 
-        double promedio = (analisis + diseno + codificacion) / 3.0;
-        double ajusteErrores = -0.5 * errores;
-        double ajusteDocumentacion = documentacion ? 0.5 : 0.0;
-        double ajusteExposicion = exposicion ? 0.5 : 0.0;
-        double notaFinal = promedio + ajusteErrores
-                         + ajusteDocumentacion + ajusteExposicion;
-        notaFinal = Math.max(0, Math.min(10, notaFinal));
+        Scanner teclado = new Scanner(System.in);
 
-        String estado;
-        if (notaFinal >= 9) estado = "Excelente";
-        else if (notaFinal >= 7) estado = "Aprobado";
-        else if (notaFinal >= 5) estado = "Recuperación";
-        else estado = "Reprobado";
-        if (avance < 60 && estado.equals("Excelente")) estado = "Aprobado";
+        double notaAnalisis = -1;
+        double notaDiseno = -1;
+        double notaCodificacion = -1;
+        double avance = -1;
 
-        String observacion = (notaFinal >= 7 && !documentacion)
-            ? "Buen producto, pero mala formalidad"
-            : "Sin observaciones";
+        int errores = -1;
 
-        System.out.printf("%nPromedio técnico: %.2f%n", promedio);
-        System.out.printf("Ajuste por errores: %.2f%n", ajusteErrores);
-        System.out.printf("Ajuste por documentación: +%.2f%n", ajusteDocumentacion);
-        System.out.printf("Ajuste por exposición: +%.2f%n", ajusteExposicion);
+        double promedioTecnico;
+        double ajusteErrores;
+        double ajusteDocumentacion = 0;
+        double ajusteExposicion = 0;
+        double notaFinal;
+
+        String respuestaDocumentacion = "";
+        String respuestaExposicion = "";
+        String estado = "";
+        String observacion = "Sin observaciones";
+
+        boolean documentacion = false;
+        boolean exposicion = false;
+
+        // Lectura y validación de la nota de análisis
+        while (notaAnalisis < 0 || notaAnalisis > 10) {
+            System.out.print("Ingrese la nota de análisis (0 a 10): ");
+            notaAnalisis = teclado.nextDouble();
+
+            if (notaAnalisis < 0 || notaAnalisis > 10) {
+                System.out.println("La nota debe estar entre 0 y 10.");
+            }
+        }
+
+        // Lectura y validación de la nota de diseño
+        while (notaDiseno < 0 || notaDiseno > 10) {
+            System.out.print("Ingrese la nota de diseño (0 a 10): ");
+            notaDiseno = teclado.nextDouble();
+
+            if (notaDiseno < 0 || notaDiseno > 10) {
+                System.out.println("La nota debe estar entre 0 y 10.");
+            }
+        }
+
+        // Lectura y validación de la nota de codificación
+        while (notaCodificacion < 0 || notaCodificacion > 10) {
+            System.out.print("Ingrese la nota de codificación (0 a 10): ");
+            notaCodificacion = teclado.nextDouble();
+
+            if (notaCodificacion < 0 || notaCodificacion > 10) {
+                System.out.println("La nota debe estar entre 0 y 10.");
+            }
+        }
+
+        // Lectura y validación del porcentaje de avance
+        while (avance < 0 || avance > 100) {
+            System.out.print("Ingrese el porcentaje de avance real: ");
+            avance = teclado.nextDouble();
+
+            if (avance < 0 || avance > 100) {
+                System.out.println("El avance debe estar entre 0 y 100.");
+            }
+        }
+
+        // Lectura y validación del número de errores
+        while (errores < 0) {
+            System.out.print("Ingrese el número de errores detectados: ");
+            errores = teclado.nextInt();
+
+            if (errores < 0) {
+                System.out.println("El número de errores no puede ser negativo.");
+            }
+        }
+
+        // Validación de la documentación
+        while (!respuestaDocumentacion.equals("S")
+                && !respuestaDocumentacion.equals("N")) {
+
+            System.out.print("¿Presentó documentación completa? (S/N): ");
+            respuestaDocumentacion = teclado.next().toUpperCase();
+
+            switch (respuestaDocumentacion) {
+                case "S":
+                    documentacion = true;
+                    break;
+
+                case "N":
+                    documentacion = false;
+                    break;
+
+                default:
+                    System.out.println("Respuesta incorrecta. Escriba S o N.");
+            }
+        }
+
+        // Validación de la exposición
+        while (!respuestaExposicion.equals("S")
+                && !respuestaExposicion.equals("N")) {
+
+            System.out.print("¿Realizó la exposición final? (S/N): ");
+            respuestaExposicion = teclado.next().toUpperCase();
+
+            switch (respuestaExposicion) {
+                case "S":
+                    exposicion = true;
+                    break;
+
+                case "N":
+                    exposicion = false;
+                    break;
+
+                default:
+                    System.out.println("Respuesta incorrecta. Escriba S o N.");
+            }
+        }
+
+        // Cálculo del promedio técnico
+        promedioTecnico =
+            (notaAnalisis + notaDiseno + notaCodificacion) / 3;
+
+        // Cálculo de la penalización por errores
+        ajusteErrores = errores * 0.5;
+
+        // Bonificación por documentación
+        if (documentacion) {
+            ajusteDocumentacion = 0.5;
+        }
+
+        // Bonificación por exposición
+        if (exposicion) {
+            ajusteExposicion = 0.5;
+        }
+
+        // Cálculo de la nota final
+        notaFinal = promedioTecnico
+                  - ajusteErrores
+                  + ajusteDocumentacion
+                  + ajusteExposicion;
+
+        // La nota final debe estar entre 0 y 10
+        if (notaFinal > 10) {
+            notaFinal = 10;
+        }
+
+        if (notaFinal < 0) {
+            notaFinal = 0;
+        }
+
+        // Asignación del estado
+        if (notaFinal >= 9) {
+            estado = "Excelente";
+        } else if (notaFinal >= 7) {
+            estado = "Aprobado";
+        } else if (notaFinal >= 5) {
+            estado = "Recuperación";
+        } else {
+            estado = "Reprobado";
+        }
+
+        // Si el avance es menor al 60 %, no puede ser Excelente
+        if (avance < 60 && estado.equals("Excelente")) {
+            estado = "Aprobado";
+        }
+
+        // Se considera buena nota desde 7
+        if (notaFinal >= 7 && !documentacion) {
+            observacion = "Buen producto, pero mala formalidad";
+        }
+
+        // Presentación de resultados
+        System.out.println("\n----- RESULTADOS -----");
+        System.out.printf("Promedio técnico: %.2f%n", promedioTecnico);
+        System.out.printf("Ajuste por errores: -%.2f%n", ajusteErrores);
+        System.out.printf(
+            "Ajuste por documentación: +%.2f%n",
+            ajusteDocumentacion
+        );
+        System.out.printf(
+            "Ajuste por exposición: +%.2f%n",
+            ajusteExposicion
+        );
         System.out.printf("Nota final: %.2f%n", notaFinal);
         System.out.println("Estado: " + estado);
         System.out.println("Observación: " + observacion);
-        sc.close();
+
+        teclado.close();
     }
 }
-
