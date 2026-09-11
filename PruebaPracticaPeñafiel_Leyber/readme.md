@@ -18,7 +18,7 @@
   </tr>
   <tr>
     <td><strong>Repositorio:</strong></td>
-    <td><code>prueba-practica-logica-Nombre-Apellido</code></td>
+    <td><code>prueba-practica-logica-Leyber-Peñafiel</code></td>
   </tr>
 </table>
 
