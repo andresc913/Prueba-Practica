@@ -1,1 +1,270 @@
+Ejercisio 1
+import java.util.Scanner;
 
+public class CompetenciaProgramacion {
+
+    public static void main(String[] args) {
+
+        Scanner entrada = new Scanner(System.in);
+
+        double reto1, reto2, reto3;
+        int errores, tiempo;
+        String desafioExtra, copia;
+        double puntajeBase, penalizacion, bonificacion, puntajeFinal;
+        String nivel, observacion;
+
+        // Entrada de datos
+        do {
+            System.out.print("Ingrese puntaje del reto 1: ");
+            reto1 = entrada.nextDouble();
+
+            System.out.print("Ingrese puntaje del reto 2: ");
+            reto2 = entrada.nextDouble();
+
+            System.out.print("Ingrese puntaje del reto 3: ");
+            reto3 = entrada.nextDouble();
+
+            if (reto1 < 0 || reto2 < 0 || reto3 < 0) {
+                System.out.println("Los puntajes no pueden ser negativos.");
+            }
+
+        } while (reto1 < 0 || reto2 < 0 || reto3 < 0);
+
+        do {
+            System.out.print("Ingrese numero de errores: ");
+            errores = entrada.nextInt();
+
+            if (errores < 0) {
+                System.out.println("Los errores no pueden ser negativos.");
+            }
+
+        } while (errores < 0);
+
+        do {
+            System.out.print("Ingrese tiempo total en minutos: ");
+            tiempo = entrada.nextInt();
+
+            if (tiempo <= 0) {
+                System.out.println("El tiempo debe ser mayor que 0.");
+            }
+
+        } while (tiempo <= 0);
+
+        entrada.nextLine();
+
+        do {
+            System.out.print("¿Resolvio el desafio extra? (Si/No): ");
+            desafioExtra = entrada.nextLine();
+
+            if (!desafioExtra.equalsIgnoreCase("Si") &&
+                !desafioExtra.equalsIgnoreCase("No")) {
+                System.out.println("Ingrese solamente Si o No.");
+            }
+
+        } while (!desafioExtra.equalsIgnoreCase("Si") &&
+                 !desafioExtra.equalsIgnoreCase("No"));
+
+        do {
+            System.out.print("¿Fue descalificado por copia? (Si/No): ");
+            copia = entrada.nextLine();
+
+            if (!copia.equalsIgnoreCase("Si") &&
+                !copia.equalsIgnoreCase("No")) {
+                System.out.println("Ingrese solamente Si o No.");
+            }
+
+        } while (!copia.equalsIgnoreCase("Si") &&
+                 !copia.equalsIgnoreCase("No"));
+
+        // Procesos
+        puntajeBase = reto1 + reto2 + reto3;
+
+        penalizacion = errores * 4;
+
+        bonificacion = 0;
+
+        if (desafioExtra.equalsIgnoreCase("Si")) {
+            bonificacion = bonificacion + 15;
+        }
+
+        if (tiempo < 30) {
+            bonificacion = bonificacion + 10;
+        }
+
+        puntajeFinal = puntajeBase - penalizacion + bonificacion;
+
+        if (puntajeFinal < 0) {
+            puntajeFinal = 0;
+        }
+
+        // Determinar nivel
+        if (copia.equalsIgnoreCase("Si")) {
+            nivel = "Descalificado";
+        } else if (puntajeFinal < 30) {
+            nivel = "Principiante";
+        } else if (puntajeFinal < 50) {
+            nivel = "Basico";
+        } else if (puntajeFinal < 70) {
+            nivel = "Intermedio";
+        } else if (puntajeFinal < 90) {
+            nivel = "Avanzado";
+        } else {
+            nivel = "Experto";
+        }
+
+        // Observación
+        observacion = "Sin observaciones";
+
+        if (puntajeFinal >= 90 && errores > 5) {
+            observacion = "Resultado inconsistente: revisar calidad de resolucion";
+        }
+
+ejercisio 2 
+
+import java.util.Scanner;
+
+public class EvaluacionCalidad {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        double analisis, diseno, codificacion;
+        double avance;
+        int errores;
+        String documentacion, exposicion;
+
+        double promedioTecnico;
+        double ajustes;
+        double notaFinal;
+
+        String estado;
+        String observacion = "Sin observaciones";
+
+        // Ingreso y validación de notas
+        do {
+            System.out.print("Nota de analisis (0-10): ");
+            analisis = sc.nextDouble();
+
+            System.out.print("Nota de diseno (0-10): ");
+            diseno = sc.nextDouble();
+
+            System.out.print("Nota de codificacion (0-10): ");
+            codificacion = sc.nextDouble();
+
+            if (analisis < 0 || analisis > 10 ||
+                diseno < 0 || diseno > 10 ||
+                codificacion < 0 || codificacion > 10) {
+                System.out.println("Las notas deben estar entre 0 y 10.");
+            }
+
+        } while (analisis < 0 || analisis > 10 ||
+                 diseno < 0 || diseno > 10 ||
+                 codificacion < 0 || codificacion > 10);
+
+        // Validar avance
+        do {
+            System.out.print("Porcentaje de avance (0-100): ");
+            avance = sc.nextDouble();
+
+            if (avance < 0 || avance > 100) {
+                System.out.println("El avance debe estar entre 0 y 100.");
+            }
+
+        } while (avance < 0 || avance > 100);
+
+        // Validar errores
+        do {
+            System.out.print("Numero de errores: ");
+            errores = sc.nextInt();
+
+            if (errores < 0) {
+                System.out.println("Los errores no pueden ser negativos.");
+            }
+
+        } while (errores < 0);
+
+        sc.nextLine();
+
+        // Documentación
+        do {
+            System.out.print("¿Presento documentacion completa? (Si/No): ");
+            documentacion = sc.nextLine();
+
+            if (!documentacion.equalsIgnoreCase("Si") &&
+                !documentacion.equalsIgnoreCase("No")) {
+                System.out.println("Ingrese Si o No.");
+            }
+
+        } while (!documentacion.equalsIgnoreCase("Si") &&
+                 !documentacion.equalsIgnoreCase("No"));
+
+        // Exposición
+        do {
+            System.out.print("¿Realizo exposicion final? (Si/No): ");
+            exposicion = sc.nextLine();
+
+            if (!exposicion.equalsIgnoreCase("Si") &&
+                !exposicion.equalsIgnoreCase("No")) {
+                System.out.println("Ingrese Si o No.");
+            }
+
+        } while (!exposicion.equalsIgnoreCase("Si") &&
+                 !exposicion.equalsIgnoreCase("No"));
+
+        // Procesos
+        promedioTecnico = (analisis + diseno + codificacion) / 3;
+
+        ajustes = errores * -0.5;
+
+        if (documentacion.equalsIgnoreCase("Si")) {
+            ajustes += 0.5;
+        }
+
+        if (exposicion.equalsIgnoreCase("Si")) {
+            ajustes += 0.5;
+        }
+
+        notaFinal = promedioTecnico + ajustes;
+
+        // Limitar nota entre 0 y 10
+        if (notaFinal > 10) {
+            notaFinal = 10;
+        }
+
+        if (notaFinal < 0) {
+            notaFinal = 0;
+        }
+
+        // Determinar estado
+        if (notaFinal >= 9) {
+            estado = "Excelente";
+        } else if (notaFinal >= 7) {
+            estado = "Aprobado";
+        } else if (notaFinal >= 5) {
+            estado = "Recuperacion";
+        } else {
+            estado = "Reprobado";
+        }
+
+        // Avance menor al 60% no permite Excelente
+        if (avance < 60 && estado.equals("Excelente")) {
+            estado = "Aprobado";
+        }
+
+        // Observación
+        if (notaFinal >= 7 && documentacion.equalsIgnoreCase("No")) {
+            observacion = "Buen producto, pero mala formalidad";
+        }
+
+        // Resultados
+        System.out.println("\n===== RESULTADOS =====");
+        System.out.printf("Promedio tecnico: %.2f%n", promedioTecnico);
+        System.out.printf("Ajustes aplicados: %.2f%n", ajustes);
+        System.out.printf("Nota final: %.2f%n", notaFinal);
+        System.out.println("Estado: " + estado);
+        System.out.println("Observacion: " + observacion);
+
+        sc.close();
+    }
+}
