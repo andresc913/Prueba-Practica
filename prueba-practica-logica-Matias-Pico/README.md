@@ -9,7 +9,7 @@
 | Campo | Detalle |
 | :--- | :--- |
 | **Nombre del Estudiante:** | Matías Alejandro Pico Cepeda |
-| **Paralelo:** | A |
+| **Paralelo:** | B |
 | **Repositorio:** | `prueba-practica-logica-Matias-Pico` |
 
 ---
